@@ -1,0 +1,18 @@
+{$DOMAIN} {
+	encode zstd gzip
+
+	# The app sets its own security headers; don't log query strings or
+	# fragments (sharing links carry the room id in the fragment, which
+	# browsers never send, but be conservative anyway).
+	log {
+		format filter {
+			wrap json
+			fields {
+				request>uri delete
+				request>headers delete
+			}
+		}
+	}
+
+	reverse_proxy app:8080
+}

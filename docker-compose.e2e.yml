@@ -1,0 +1,32 @@
+# Real-browser end-to-end tests (headless Chromium via Playwright).
+#
+#   docker compose -f docker-compose.e2e.yml up --build --abort-on-container-exit --exit-code-from e2e
+services:
+  app:
+    build: .
+    image: directsend:latest
+    environment:
+      STATS_ENABLED: "true"
+      MAX_CONCURRENT_TRANSFERS: "3"
+      MEMORY_FALLBACK_MAX_MB: "64"
+      # No STUN needed inside one machine; host candidates are enough.
+      STUN_URLS: "stun:127.0.0.1:3478"
+      CONNECT_TIMEOUT_SECONDS: "20"
+
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.63.0-noble
+    depends_on:
+      - app
+    network_mode: "service:app"
+    working_dir: /e2e
+    ipc: host
+    environment:
+      BASE_URL: http://localhost:8080
+      LARGE_FILE_MB: ${LARGE_FILE_MB:-1024}
+    volumes:
+      - ./e2e:/e2e
+      - e2e_node_modules:/e2e/node_modules
+    command: sh -c "npm install --no-audit --no-fund --silent && npx playwright test"
+
+volumes:
+  e2e_node_modules:
