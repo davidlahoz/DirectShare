@@ -28,6 +28,7 @@ for (const scheme of ['light', 'dark']) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: scheme });
   const sender = await ctx.newPage();
   await sender.goto(base);
+  await sender.waitForTimeout(1800);
   if (scheme === 'light') await sender.screenshot({ path: out('1-sender-empty-light'), fullPage: true });
   await sender.locator('input[type=file]').setInputFiles(['/tmp/quarterly-report.pdf', '/tmp/site-photos.zip', '/tmp/notes.txt']);
   await sender.screenshot({ path: out(`2-sender-selected-${scheme}`), fullPage: true });
@@ -39,6 +40,7 @@ for (const scheme of ['light', 'dark']) {
     await c.addInitScript(picker);
     const p = await c.newPage();
     await p.goto(url);
+    await p.waitForTimeout(1800);
     if (name) await p.getByLabel('Your name (optional)').fill(name);
     await p.getByRole('button', { name: 'Connect to sender' }).click();
     await p.evaluate((d) => (window.__delay = d), delay);

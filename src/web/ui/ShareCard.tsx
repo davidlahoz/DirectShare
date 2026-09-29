@@ -29,7 +29,7 @@ export function ShareCard({ url }: { url: string }) {
   };
 
   return (
-    <section className="card share-card" aria-labelledby="share-heading">
+    <section className="card glass share-card" aria-labelledby="share-heading">
       <h2 id="share-heading">Share this link</h2>
       <p className="muted small-text">
         Anyone with this link can ask for the files. You approve each person before anything is sent.
