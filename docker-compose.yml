@@ -1,0 +1,66 @@
+# DirectSend behind Cloudflare Tunnel (default setup).
+#
+# The app is published ONLY on the host's loopback interface (127.0.0.1:8080).
+# It is not reachable from the LAN or the internet directly; cloudflared on the
+# host forwards https://<your-hostname> → http://127.0.0.1:8080.
+#
+#   docker compose up -d --build           → http://127.0.0.1:8080 (on the host only)
+#   docker compose --profile test run --rm test   → type-check + automated tests
+#
+# See docs/DEPLOYMENT.md → "Cloudflare Tunnel".
+services:
+  app:
+    build: .
+    image: directsend:latest
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: "8080"
+      # Only cloudflared can reach the loopback port, so its forwarded headers
+      # (CF-Connecting-IP, X-Forwarded-Proto) are trustworthy.
+      TRUST_PROXY: ${TRUST_PROXY:-true}
+      # Set to your public URL, e.g. https://send.example.com (in .env).
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-}
+    ports:
+      # Loopback only: never bind to a public or LAN address.
+      - "127.0.0.1:${HOST_PORT:-8080}:8080"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  # Optional, for testing on a LAN without the tunnel: serves the app over
+  # HTTPS on port 8443 of every host interface. Not needed with Cloudflare Tunnel.
+  https:
+    profiles: ["https"]
+    image: caddy:2-alpine
+    depends_on:
+      - app
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-localhost:8443}
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./deploy/Caddyfile.local:/etc/caddy/Caddyfile:ro
+      - caddy_local_data:/data
+
+  test:
+    profiles: ["test"]
+    build:
+      context: .
+      target: deps
+    working_dir: /app
+    volumes:
+      - ./src:/app/src:ro
+      - ./tsconfig.base.json:/app/tsconfig.base.json:ro
+      - ./tsconfig.web.json:/app/tsconfig.web.json:ro
+      - ./tsconfig.server.json:/app/tsconfig.server.json:ro
+      - ./vite.config.ts:/app/vite.config.ts:ro
+      - ./vitest.config.ts:/app/vitest.config.ts:ro
+    command: sh -c "npm run typecheck && npm test"
+
+volumes:
+  caddy_local_data:

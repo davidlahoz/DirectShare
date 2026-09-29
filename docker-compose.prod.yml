@@ -1,0 +1,43 @@
+# Production: Caddy terminates HTTPS (automatic Let's Encrypt certificates)
+# and proxies HTTP + WebSockets to the app container.
+#
+#   DOMAIN=send.example.com docker compose -f docker-compose.prod.yml up -d --build
+services:
+  app:
+    build: .
+    image: directsend:latest
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: "8080"
+      TRUST_PROXY: "true"
+      ALLOWED_ORIGINS: https://${DOMAIN:?set DOMAIN to your public hostname}
+    expose:
+      - "8080"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      - app
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

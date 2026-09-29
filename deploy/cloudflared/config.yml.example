@@ -1,0 +1,14 @@
+# cloudflared configuration for DirectSend (runs on the Docker host).
+# Copy to /etc/cloudflared/config.yml (or ~/.cloudflared/config.yml) and replace
+# <TUNNEL-UUID> and the hostname. See docs/DEPLOYMENT.md → "Cloudflare Tunnel".
+tunnel: <TUNNEL-UUID>
+credentials-file: /etc/cloudflared/<TUNNEL-UUID>.json
+
+ingress:
+  - hostname: send.example.com
+    # The container is published on loopback only.
+    service: http://127.0.0.1:8080
+    originRequest:
+      # Keep the public hostname in the Host header seen by the app.
+      httpHostHeader: send.example.com
+  - service: http_status:404

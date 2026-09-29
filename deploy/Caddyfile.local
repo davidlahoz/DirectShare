@@ -1,0 +1,10 @@
+# Local HTTPS with Caddy's internal CA. Your browser will warn once unless
+# you trust Caddy's root certificate (see docs/DEPLOYMENT.md).
+{
+	auto_https disable_redirects
+}
+
+https://{$SITE_ADDRESS} {
+	tls internal
+	reverse_proxy app:8080
+}
