@@ -6,6 +6,12 @@ import { SenderSession, type SenderSnapshot } from '../session/SenderSession';
 import { Countdown, KeepOpenNotice, Notice, Spinner } from './components';
 import { HistoryPanel } from './HistoryPanel';
 import { ReceiverList } from './ReceiverList';
+import { Backdrop } from './Backdrop';
+import BlurText from './reactbits/BlurText';
+import ClickSpark from './reactbits/ClickSpark';
+import ShinyText from './reactbits/ShinyText';
+import SpotlightCard from './reactbits/SpotlightCard';
+import StarBorder from './reactbits/StarBorder';
 import { ShareCard } from './ShareCard';
 
 export function SenderApp({ config }: { config: ClientConfig }) {
@@ -28,11 +34,25 @@ export function SenderApp({ config }: { config: ClientConfig }) {
     };
   }, [session]);
 
-  if (snap.phase === 'select' || snap.phase === 'creating') {
-    return <SelectFiles session={session} snap={snap} config={config} />;
-  }
-  return <Sharing session={session} snap={snap} />;
+  // The animated backdrop pauses while any file is moving.
+  const calm = snap.receivers.some((r) => r.status === 'connecting' || r.status === 'awaiting-acceptance' || r.status === 'transferring');
+  return (
+    <>
+      <Backdrop calm={calm} />
+      {snap.phase === 'select' || snap.phase === 'creating' ? (
+        <SelectFiles session={session} snap={snap} config={config} />
+      ) : (
+        <Sharing session={session} snap={snap} />
+      )}
+    </>
+  );
 }
+
+const HOW_IT_WORKS = [
+  { title: 'Share the link or QR code', body: 'Anyone with the link can ask to receive — treat it like a password.' },
+  { title: 'Approve each receiver', body: 'Nothing is sent until you approve them and they accept.' },
+  { title: 'Keep this tab open', body: 'Each receiver gets their own direct, encrypted connection to this browser.' },
+];
 
 // ---------------------------------------------------------------------------
 
@@ -48,7 +68,11 @@ function SelectFiles({ session, snap, config }: { session: SenderSession; snap: 
   return (
     <div className="stack">
       <section className="hero">
-        <h1>Send files directly to another browser</h1>
+        <p className="eyebrow">
+          <span className="eyebrow-dot" aria-hidden="true" />
+          <ShinyText text="Peer-to-peer · Encrypted in transit · No uploads" speed={4} />
+        </p>
+        <BlurText as="h1" text="Send files directly to another browser" className="hero-title" />
         <p className="lead">
           Pick files, share a link, and approve who gets them. Files go straight from this device to theirs — nothing is
           uploaded to a server.
@@ -61,11 +85,11 @@ function SelectFiles({ session, snap, config }: { session: SenderSession; snap: 
         </Notice>
       )}
 
-      <section aria-labelledby="choose-files" className="card">
+      <section aria-labelledby="choose-files" className="card glass">
         <h2 id="choose-files" className="visually-hidden">
           Choose files
         </h2>
-        <div
+        <SpotlightCard
           className={`dropzone${dragging ? ' dragging' : ''}`}
           onDragEnter={(e) => {
             e.preventDefault();
@@ -111,7 +135,7 @@ function SelectFiles({ session, snap, config }: { session: SenderSession; snap: 
               e.target.value = '';
             }}
           />
-        </div>
+        </SpotlightCard>
 
         {snap.files.length > 0 && (
           <div className="selection">
@@ -144,15 +168,19 @@ function SelectFiles({ session, snap, config }: { session: SenderSession; snap: 
               ))}
             </ul>
             <div className="actions">
-              <button type="button" className="button primary large" onClick={() => session.startSharing()} disabled={creating}>
-                {creating ? (
-                  <>
-                    <Spinner label="" /> Creating link…
-                  </>
-                ) : (
-                  'Create sharing link'
-                )}
-              </button>
+              <ClickSpark>
+                <StarBorder className="cta-border">
+                  <button type="button" className="button primary large cta" onClick={() => session.startSharing()} disabled={creating}>
+                    {creating ? (
+                      <>
+                        <Spinner label="" /> Creating link…
+                      </>
+                    ) : (
+                      'Create sharing link'
+                    )}
+                  </button>
+                </StarBorder>
+              </ClickSpark>
               <p className="hint">
                 The file list is locked once sharing starts. Links last up to {Math.round(config.roomTtlSeconds / 60)} minutes
                 and allow up to {plural(config.maxReceiversPerRoom, 'receiver')}.
@@ -162,18 +190,18 @@ function SelectFiles({ session, snap, config }: { session: SenderSession; snap: 
         )}
       </section>
 
-      <section className="how card subtle" aria-labelledby="how-it-works">
+      <section className="how" aria-labelledby="how-it-works">
         <h2 id="how-it-works">How it works</h2>
-        <ol className="steps">
-          <li>
-            <strong>Share the link or QR code.</strong> Anyone with the link can ask to receive — treat it like a password.
-          </li>
-          <li>
-            <strong>Approve each receiver.</strong> Nothing is sent until you approve them and they accept.
-          </li>
-          <li>
-            <strong>Keep this tab open.</strong> Each receiver gets their own direct, encrypted connection to this browser.
-          </li>
+        <ol className="feature-grid">
+          {HOW_IT_WORKS.map((step, i) => (
+            <SpotlightCard as="li" key={step.title} className="feature">
+              <span className="feature-number" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <strong>{step.title}</strong>
+              <span className="muted small-text">{step.body}</span>
+            </SpotlightCard>
+          ))}
         </ol>
         <p className="muted small-text">
           Very large files work best when the receiver uses a desktop browser that can save straight to disk (such as Chrome

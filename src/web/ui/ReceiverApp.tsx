@@ -4,6 +4,12 @@ import { MAX_DISPLAY_NAME_LENGTH } from '../../shared/sanitize';
 import { formatBytes, formatDuration, formatSpeed, plural } from '../lib/format';
 import { type ReceiverPhase, ReceiverSession, type ReceiverSnapshot } from '../session/ReceiverSession';
 import { KeepOpenNotice, Notice, ProgressBar, Spinner, StatusBadge, type Tone } from './components';
+import { Backdrop } from './Backdrop';
+import BlurText from './reactbits/BlurText';
+import ClickSpark from './reactbits/ClickSpark';
+import ShinyText from './reactbits/ShinyText';
+import SpotlightCard from './reactbits/SpotlightCard';
+import StarBorder from './reactbits/StarBorder';
 import { FileGlyph } from './SenderApp';
 
 const PHASE: Record<ReceiverPhase, { label: string; tone: Tone }> = {
@@ -45,11 +51,21 @@ export function ReceiverApp({ roomId, config }: { roomId: string; config: Client
   const phase = PHASE[snap.phase];
   const waitingForSender = !snap.senderOnline && ['awaiting-approval', 'queued'].includes(snap.phase);
 
+  const calm = snap.phase === 'transferring' || snap.phase === 'connecting-peer';
+
   return (
     <div className="receiver-layout">
-      <section className="card" aria-labelledby="receive-heading">
+      <Backdrop calm={calm} />
+      <section className="hero compact-hero">
+        <p className="eyebrow">
+          <span className="eyebrow-dot" aria-hidden="true" />
+          <ShinyText text="Direct from the sender’s browser" speed={4} />
+        </p>
+        <BlurText as="h1" text="Receive files" className="hero-title" />
+      </section>
+      <section className="card glass" aria-labelledby="receive-heading">
         <div className="section-head">
-          <h1 id="receive-heading">Receive files</h1>
+          <h2 id="receive-heading">Your transfer</h2>
           <StatusBadge tone={waitingForSender ? 'warning' : phase.tone}>{waitingForSender ? 'Waiting for sender' : phase.label}</StatusBadge>
         </div>
         {snap.label && (
@@ -155,9 +171,13 @@ function JoinForm({ onJoin }: { onJoin(name?: string): void }) {
         </p>
       </div>
       <KeepOpenNotice role="receiver" />
-      <button type="submit" className="button primary large">
-        Connect to sender
-      </button>
+      <ClickSpark>
+        <StarBorder className="cta-border">
+          <button type="submit" className="button primary large cta">
+            Connect to sender
+          </button>
+        </StarBorder>
+      </ClickSpark>
     </form>
   );
 }
@@ -167,7 +187,9 @@ function Waiting({ text, detail }: { text: string; detail?: string }) {
     <div className="waiting">
       <Spinner label="In progress" />
       <div>
-        <p>{text}</p>
+        <p>
+          <ShinyText text={text} speed={2.5} />
+        </p>
         {detail && <p className="muted small-text">{detail}</p>}
       </div>
     </div>
@@ -212,7 +234,7 @@ function Review({ session, snap }: { session: ReceiverSession; snap: ReceiverSna
         {snap.pickerError && <Notice tone="danger">{snap.pickerError}</Notice>}
 
         {caps.directory && (
-          <div className="destination recommended">
+          <SpotlightCard className="destination recommended">
             <div>
               <strong>Save to a folder</strong> <StatusBadge tone="success">Recommended</StatusBadge>
               <p className="muted small-text">
@@ -220,14 +242,16 @@ function Review({ session, snap }: { session: ReceiverSession; snap: ReceiverSna
                 to save in the folder you pick. Existing files are never overwritten.
               </p>
             </div>
-            <button type="button" className="button primary" onClick={() => void session.chooseFolderAndAccept()}>
-              Choose folder and accept
-            </button>
-          </div>
+            <ClickSpark className="inline">
+              <button type="button" className="button primary" onClick={() => void session.chooseFolderAndAccept()}>
+                Choose folder and accept
+              </button>
+            </ClickSpark>
+          </SpotlightCard>
         )}
 
         {single && caps.saveFile && (
-          <div className="destination">
+          <SpotlightCard className="destination">
             <div>
               <strong>Save as…</strong>
               <p className="muted small-text">Pick the exact file name and location. Also streams to disk.</p>
@@ -235,11 +259,11 @@ function Review({ session, snap }: { session: ReceiverSession; snap: ReceiverSna
             <button type="button" className={`button ${caps.directory ? 'secondary' : 'primary'}`} onClick={() => void session.chooseFileAndAccept()}>
               Choose location and accept
             </button>
-          </div>
+          </SpotlightCard>
         )}
 
         {memoryOk ? (
-          <div className="destination">
+          <SpotlightCard className="destination">
             <div>
               <strong>Download through the browser</strong>
               <p className="muted small-text">
@@ -250,7 +274,7 @@ function Review({ session, snap }: { session: ReceiverSession; snap: ReceiverSna
             <button type="button" className={`button ${streaming ? 'secondary' : 'primary'}`} onClick={() => session.acceptBrowserDownload()}>
               Accept and download
             </button>
-          </div>
+          </SpotlightCard>
         ) : (
           !streaming && (
             <Notice tone="danger" title="Too large for this browser">

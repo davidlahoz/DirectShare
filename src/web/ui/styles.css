@@ -1009,3 +1009,332 @@ main:focus {
     flex-direction: column;
   }
 }
+
+/* ==========================================================================
+   Visual layer: React Bits components (see ui/reactbits/README.md)
+   ========================================================================== */
+
+:root {
+  --star-color: #0b6e4f;
+  --spark-color: #0b6e4f;
+  --spotlight: rgb(11 110 79 / 14%);
+  --glass: rgb(255 255 255 / 78%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --star-color: #b9f6dc;
+    --spark-color: #7ee8bb;
+    --spotlight: rgb(79 207 159 / 16%);
+    --glass: rgb(26 29 26 / 72%);
+  }
+}
+:root[data-theme='dark'] {
+  --star-color: #b9f6dc;
+  --spark-color: #7ee8bb;
+  --spotlight: rgb(79 207 159 / 16%);
+  --glass: rgb(26 29 26 / 72%);
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Aurora backdrop ---------------------------------------------------------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: min(620px, 80vh);
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  /* Shown if WebGL is unavailable. */
+  background: radial-gradient(60% 80% at 30% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent),
+    radial-gradient(50% 70% at 80% 0%, color-mix(in srgb, var(--info) 18%, transparent), transparent);
+}
+.backdrop-light {
+  opacity: 0.75;
+}
+.aurora-container,
+.aurora-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Hero --------------------------------------------------------------------- */
+
+.hero {
+  padding: 2.5rem 0 0.75rem;
+}
+.compact-hero {
+  padding: 1.25rem 0 0.25rem;
+  text-align: center;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 auto 1rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.85rem;
+  font-weight: 650;
+  --shine-base: var(--accent);
+  --shine-hi: var(--text);
+}
+.eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.hero-title {
+  font-size: clamp(2.1rem, 5.2vw, 3.5rem);
+  font-weight: 780;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 0 auto;
+  max-width: 14em;
+}
+.compact-hero .hero-title {
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+}
+.blur-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.blur-text-word {
+  display: inline-block;
+  will-change: transform, filter, opacity;
+}
+.hero .lead {
+  margin-top: 1rem;
+}
+
+/* Glass surfaces ----------------------------------------------------------- */
+
+.card.glass {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+
+/* ShinyText ---------------------------------------------------------------- */
+
+.shiny-text {
+  --shine-base: var(--text);
+  --shine-hi: var(--accent);
+  color: var(--shine-base);
+  background-image: linear-gradient(
+    120deg,
+    var(--shine-base) 0%,
+    var(--shine-base) 38%,
+    var(--shine-hi) 50%,
+    var(--shine-base) 62%,
+    var(--shine-base) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+.eyebrow .shiny-text {
+  --shine-base: var(--accent);
+  --shine-hi: var(--text);
+}
+@keyframes shine {
+  from {
+    background-position: 150% center;
+  }
+  to {
+    background-position: -50% center;
+  }
+}
+.shiny-text.disabled {
+  animation: none;
+}
+
+/* SpotlightCard ------------------------------------------------------------ */
+
+.card-spotlight {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px circle at var(--mouse-x) var(--mouse-y), var(--spotlight), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.card-spotlight:hover::before,
+.card-spotlight:focus-within::before,
+.dropzone.dragging::before {
+  opacity: 1;
+}
+.dropzone {
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.dropzone.dragging {
+  transform: scale(1.01);
+}
+
+/* Feature tiles ------------------------------------------------------------ */
+
+.how {
+  padding: 0.5rem 0 0;
+}
+.how h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.feature-grid {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.feature {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding: 1.1rem 1.1rem 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.feature-number {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.how > .muted {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+@media (max-width: 720px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* StarBorder --------------------------------------------------------------- */
+
+.star-border {
+  position: relative;
+  display: block;
+  padding: 2px;
+  border-radius: 13px;
+  overflow: hidden;
+}
+.star-border-glow {
+  position: absolute;
+  width: 300%;
+  height: 50%;
+  opacity: 0.9;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--star-color), transparent 12%);
+  animation: linear infinite alternate;
+  z-index: 0;
+}
+.star-border-glow.bottom {
+  bottom: -12px;
+  right: -250%;
+  animation-name: star-movement-bottom;
+}
+.star-border-glow.top {
+  top: -12px;
+  left: -250%;
+  animation-name: star-movement-top;
+}
+.star-border-inner {
+  position: relative;
+  z-index: 1;
+}
+.star-border-inner > .button {
+  width: 100%;
+}
+.button.cta {
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+@keyframes star-movement-bottom {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100%, 0%);
+    opacity: 0;
+  }
+}
+@keyframes star-movement-top {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100%, 0%);
+    opacity: 0;
+  }
+}
+
+/* ClickSpark --------------------------------------------------------------- */
+
+.click-spark {
+  position: relative;
+  display: block;
+}
+.click-spark.inline {
+  display: inline-block;
+  flex: none;
+}
+.click-spark-canvas {
+  position: absolute;
+  inset: -32px;
+  width: calc(100% + 64px);
+  height: calc(100% + 64px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Motion preferences ------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text,
+  .star-border-glow {
+    animation: none;
+  }
+  .shiny-text {
+    background: none;
+    -webkit-text-fill-color: var(--shine-base);
+  }
+  .star-border-glow {
+    display: none;
+  }
+  .card-spotlight::before {
+    transition: none;
+  }
+}

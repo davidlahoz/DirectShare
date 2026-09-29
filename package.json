@@ -20,6 +20,8 @@
     "check": "npm run typecheck && npm run test"
   },
   "dependencies": {
+    "motion": "^13.4.5",
+    "ogl": "^1.0.11",
     "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

@@ -1,6 +1,7 @@
 import type { HistorySummary } from '../history/downloadHistory';
 import { formatBytes, formatTime, plural } from '../lib/format';
 import { StatusBadge } from './components';
+import CountUp from './reactbits/CountUp';
 
 export function HistoryPanel({ summary, fileCount, onClear }: { summary: HistorySummary; fileCount: number; onClear(): void }) {
   const hasAnything = summary.successfulCount + summary.saveUnconfirmed.length + summary.unconfirmed.length > 0;
@@ -17,13 +18,13 @@ export function HistoryPanel({ summary, fileCount, onClear }: { summary: History
 
       <div className="history-stats" aria-live="polite">
         <div className="stat">
-          <span className="stat-value">{summary.completeReceivers}</span>
+          <CountUp className="stat-value" to={summary.completeReceivers} />
           <span className="stat-label">
             {summary.completeReceivers === 1 ? 'receiver has' : 'receivers have'} all {plural(fileCount, 'file')}
           </span>
         </div>
         <div className="stat">
-          <span className="stat-value">{summary.successfulCount}</span>
+          <CountUp className="stat-value" to={summary.successfulCount} />
           <span className="stat-label">confirmed {summary.successfulCount === 1 ? 'download' : 'downloads'}</span>
         </div>
       </div>
