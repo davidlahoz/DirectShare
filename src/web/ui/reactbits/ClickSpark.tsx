@@ -36,7 +36,7 @@ export default function ClickSpark({ children, className = '', sparkSize = 10, s
       const ctx = canvas?.getContext('2d');
       if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = getComputedStyle(canvas).getPropertyValue('--spark-color').trim() || '#0b6e4f';
+      ctx.strokeStyle = getComputedStyle(canvas).getPropertyValue('--spark-color').trim() || '#8fa6ff';
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
       sparks.current = sparks.current.filter((s) => {

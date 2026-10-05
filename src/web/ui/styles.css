@@ -1,30 +1,33 @@
 :root {
   color-scheme: dark;
-  --bg: #121412;
-  --surface: #1a1d1a;
-  --surface-2: #222622;
-  --border: #333833;
-  --text: #ecebe5;
-  --muted: #a7a89f;
-  --accent: #4fcf9f;
-  --accent-hover: #6fdcb2;
-  --accent-soft: #173427;
-  --on-accent: #0b1f17;
-  --info: #8ab8f5;
-  --info-soft: #1a2738;
-  --success: #6fd49a;
-  --success-soft: #16301f;
+  /* RazorLabs palette (shared with razorlabs.dev): slate surfaces, brand-blue accent */
+  --bg: #111316;
+  --surface: #1b1f24;
+  --surface-2: #22272d;
+  --border: #2b3139;
+  --text: #ece7dc;
+  --muted: #8b919b;
+  --accent: #6f8cff;
+  --accent-hover: #8aa1ff;
+  --accent-soft: rgb(111 140 255 / 14%);
+  --on-accent: #0a1030;
+  --info: #8fd8ff;
+  --info-soft: rgb(143 216 255 / 12%);
+  --success: #58c77a;
+  --success-soft: rgb(88 199 122 / 12%);
   --warning: #f0b54f;
-  --warning-soft: #33280f;
-  --danger: #ff8a80;
-  --danger-soft: #3a1917;
-  --focus: #8ab8f5;
-  --logo-ink: #0b1f17;
-  --radius: 14px;
-  --radius-sm: 8px;
-  --shadow: 0 1px 2px rgb(0 0 0 / 30%);
-  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  --warning-soft: rgb(240 181 79 / 12%);
+  --danger: #ff5d5d;
+  --danger-soft: rgb(255 93 93 / 12%);
+  --focus: #6f8cff;
+  --logo-ink: #0a1030;
+  --grid: rgb(236 231 220 / 4.5%);
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow: 0 10px 30px rgb(0 0 0 / 45%);
+  --font: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Avenir Next Condensed', 'Helvetica Neue', sans-serif;
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
 }
 
 *,
@@ -39,7 +42,10 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--bg);
   color: var(--text);
   font: 16px/1.5 var(--font);
   -webkit-font-smoothing: antialiased;
@@ -48,6 +54,7 @@ body {
 h1,
 h2,
 h3 {
+  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.015em;
@@ -128,6 +135,33 @@ a {
   color: var(--text);
   text-decoration: none;
   letter-spacing: -0.02em;
+}
+.parent-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+.parent-link:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+@media (max-width: 420px) {
+  .parent-link span {
+    display: none;
+  }
+}
+.brand span {
+  font-family: var(--font-display);
+  font-weight: 800;
 }
 .logo {
   width: 30px;
@@ -924,10 +958,10 @@ main:focus {
    ========================================================================== */
 
 :root {
-  --star-color: #b9f6dc;
-  --spark-color: #7ee8bb;
-  --spotlight: rgb(79 207 159 / 16%);
-  --glass: rgb(26 29 26 / 72%);
+  --star-color: #c3d0ff;
+  --spark-color: #8fa6ff;
+  --spotlight: rgb(111 140 255 / 16%);
+  --glass: rgb(27 31 36 / 78%);
 }
 
 .site-header,
@@ -937,7 +971,7 @@ main,
   z-index: 1;
 }
 
-/* Aurora backdrop ---------------------------------------------------------- */
+/* Backdrop: a static brand-blue glow over the grid (no animation, nothing to compete with transfers) */
 
 .backdrop {
   position: fixed;
@@ -947,15 +981,8 @@ main,
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
   mask-image: linear-gradient(to bottom, #000 30%, transparent);
-  /* Shown if WebGL is unavailable. */
   background: radial-gradient(60% 80% at 30% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent),
     radial-gradient(50% 70% at 80% 0%, color-mix(in srgb, var(--info) 18%, transparent), transparent);
-}
-.aurora-container,
-.aurora-container canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
 }
 
 /* Hero --------------------------------------------------------------------- */
@@ -992,7 +1019,7 @@ main,
 }
 .hero-title {
   font-size: clamp(2.1rem, 5.2vw, 3.5rem);
-  font-weight: 780;
+  font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.05;
   margin: 0 auto;

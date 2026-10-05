@@ -5,7 +5,7 @@
 services:
   app:
     build: .
-    image: directsend:latest
+    image: directshare:latest
     env_file:
       - path: .env
         required: false

@@ -1,4 +1,4 @@
-# DirectSend behind Cloudflare Tunnel (default setup).
+# DirectShare behind Cloudflare Tunnel (default setup).
 #
 # The app is published ONLY on the host's loopback interface (127.0.0.1:8080).
 # It is not reachable from the LAN or the internet directly; cloudflared on the
@@ -11,7 +11,7 @@
 services:
   app:
     build: .
-    image: directsend:latest
+    image: directshare:latest
     env_file:
       - path: .env
         required: false

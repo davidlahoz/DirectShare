@@ -4,9 +4,13 @@ import { percent } from '../lib/format';
 export function Header() {
   return (
     <header className="site-header">
-      <a className="brand" href="/" aria-label="DirectSend home">
+      <a className="brand" href="/" aria-label="DirectShare home">
         <Logo />
-        <span>DirectSend</span>
+        <span>DirectShare</span>
+      </a>
+      <a className="parent-link" href="https://razorlabs.dev/" title="More projects on razorlabs.dev">
+        <img src="/razorlabs-mark.png" alt="" width={22} height={22} />
+        <span>A RazorLabs project</span>
       </a>
     </header>
   );

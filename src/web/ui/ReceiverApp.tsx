@@ -132,7 +132,7 @@ function PhaseBody({ session, snap }: { session: ReceiverSession; snap: Receiver
       return (
         <div className="stack-sm">
           <Notice tone="warning" title="Delivered to your browser — save unconfirmed">
-            All files were received and handed to your browser’s downloads. Check your Downloads folder: DirectSend can’t
+            All files were received and handed to your browser’s downloads. Check your Downloads folder: DirectShare can’t
             confirm your browser saved them. If a file is missing, ask the sender to share again.
           </Notice>
           <FileProgressList snap={snap} />
@@ -268,7 +268,7 @@ function Review({ session, snap }: { session: ReceiverSession; snap: ReceiverSna
               <strong>Download through the browser</strong>
               <p className="muted small-text">
                 {streaming ? 'Alternative for smaller transfers: each' : 'This browser can’t stream files to disk, so each'} file is held in memory until complete, then passed to your browser’s downloads (limit{' '}
-                {formatBytes(snap.memoryLimit)}). DirectSend can’t confirm your browser saved it.
+                {formatBytes(snap.memoryLimit)}). DirectShare can’t confirm your browser saved it.
               </p>
             </div>
             <button type="button" className={`button ${streaming ? 'secondary' : 'primary'}`} onClick={() => session.acceptBrowserDownload()}>

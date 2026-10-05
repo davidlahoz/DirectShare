@@ -9,8 +9,8 @@
 
 ## What it does not provide
 
-- **Peer identity is not verified.** DTLS encrypts the channel, but DirectSend does not verify fingerprints out of band. Anyone who obtains the link can request files, and display names are self-declared. The signaling server could in principle substitute its own peer (man-in-the-middle), so trust in the server operator is required. Mitigations: approve only receivers you expect, and share links privately.
-- **Completion records are receiver-reported.** A “successful download” means the receiver's DirectSend page reported that it verified byte and chunk counts, finished writing and closed the file. It is not independent proof that the file exists, is intact at rest, or was not later deleted. A modified client could lie. There is no end-to-end content hash in protocol v1; DTLS and SCTP provide transport integrity.
+- **Peer identity is not verified.** DTLS encrypts the channel, but DirectShare does not verify fingerprints out of band. Anyone who obtains the link can request files, and display names are self-declared. The signaling server could in principle substitute its own peer (man-in-the-middle), so trust in the server operator is required. Mitigations: approve only receivers you expect, and share links privately.
+- **Completion records are receiver-reported.** A “successful download” means the receiver's DirectShare page reported that it verified byte and chunk counts, finished writing and closed the file. It is not independent proof that the file exists, is intact at rest, or was not later deleted. A modified client could lie. There is no end-to-end content hash in protocol v1; DTLS and SCTP provide transport integrity.
 - **Network exposure.** WebRTC reveals IP addresses (local and public) to the other peer and to the STUN servers. Signaling carries ICE candidates and therefore passes through the server as well.
 - **Session cleanup does not delete received files.** Closing tabs, stopping sharing or room expiry ends connections only. Files already saved stay on receivers' devices.
 

@@ -89,7 +89,7 @@ export function HistoryPanel({ summary, fileCount, onClear }: { summary: History
       )}
 
       <p className="muted small-text fine-print">
-        Confirmations are reported by the receiver’s DirectSend page after it finished writing the file. They are not
+        Confirmations are reported by the receiver’s DirectShare page after it finished writing the file. They are not
         independent proof that the file is still on the device. History is kept only in this tab.
       </p>
     </section>

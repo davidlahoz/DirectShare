@@ -12,8 +12,8 @@ let server: RunningServer;
 let base: string;
 
 beforeAll(async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'directsend-'));
-  writeFileSync(join(dir, 'index.html'), '<!doctype html><title>DirectSend</title>');
+  const dir = mkdtempSync(join(tmpdir(), 'directshare-'));
+  writeFileSync(join(dir, 'index.html'), '<!doctype html><title>DirectShare</title>');
   const config = loadConfig({ PORT: '1', HOST: '127.0.0.1', STATIC_DIR: dir, STATS_ENABLED: 'true', MAX_RECEIVERS_PER_ROOM: '3' });
   server = await startServer({ ...config, port: 0 }, silentLogger);
   base = `127.0.0.1:${server.port}`;

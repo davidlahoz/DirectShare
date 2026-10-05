@@ -1,5 +1,5 @@
 {
-  "name": "directsend",
+  "name": "directshare",
   "version": "1.0.0",
   "private": true,
   "description": "Peer-to-peer browser file transfer over WebRTC with a lightweight WebSocket signaling server.",
@@ -20,8 +20,10 @@
     "check": "npm run typecheck && npm run test"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
     "motion": "^13.4.5",
-    "ogl": "^1.0.11",
     "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

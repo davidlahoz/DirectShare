@@ -2,12 +2,12 @@
 #
 #   docker compose -f docker-compose.e2e.yml up --build --abort-on-container-exit --exit-code-from e2e
 # Separate project name so e2e runs never touch the local app container.
-name: directsend-e2e
+name: directshare-e2e
 
 services:
   app:
     build: .
-    image: directsend:latest
+    image: directshare:latest
     environment:
       STATS_ENABLED: "true"
       MAX_CONCURRENT_TRANSFERS: "3"

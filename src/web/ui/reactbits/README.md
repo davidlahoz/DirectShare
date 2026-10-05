@@ -3,7 +3,7 @@
 Adapted from [React Bits](https://reactbits.dev) (MIT + Commons Clause) by David Haz.
 Sources fetched from the React Bits registry (`https://reactbits.dev/r/<Name>-TS-CSS.json`).
 
-Changes made for DirectSend:
+Changes made for DirectShare:
 
 - Colors come from the app's color tokens instead of hard-coded values.
 - Every animation honors `prefers-reduced-motion`.
@@ -12,7 +12,6 @@ Changes made for DirectSend:
 
 | Component | Used for |
 | --- | --- |
-| Aurora | WebGL backdrop behind the page header |
 | BlurText | Headline reveal |
 | ShinyText | Eyebrow pill and waiting messages |
 | SpotlightCard | Dropzone, feature tiles, save options |

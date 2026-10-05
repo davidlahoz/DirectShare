@@ -62,7 +62,7 @@ export function loadConfig(env: Env = process.env): ServerConfig {
   const stunUrls = list(env, 'STUN_URLS') ?? DEFAULT_CLIENT_CONFIG.stunUrls;
   for (const url of stunUrls) {
     if (/^turns?:/i.test(url)) {
-      throw new ConfigError('TURN relays are not supported: DirectSend only uses direct peer-to-peer connections');
+      throw new ConfigError('TURN relays are not supported: DirectShare only uses direct peer-to-peer connections');
     }
     if (!isStunUrl(url)) throw new ConfigError(`Invalid STUN URL: ${url}`);
   }
