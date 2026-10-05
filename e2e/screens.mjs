@@ -24,12 +24,12 @@ const picker = () => {
 };
 
 const browser = await chromium.launch({ args: ['--disable-features=WebRtcHideLocalIpsWithMdns'] });
-for (const scheme of ['light', 'dark']) {
+for (const scheme of ['dark']) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: scheme });
   const sender = await ctx.newPage();
   await sender.goto(base);
   await sender.waitForTimeout(1800);
-  if (scheme === 'light') await sender.screenshot({ path: out('1-sender-empty-light'), fullPage: true });
+  await sender.screenshot({ path: out('1-sender-empty-light'), fullPage: true });
   await sender.locator('input[type=file]').setInputFiles(['/tmp/quarterly-report.pdf', '/tmp/site-photos.zip', '/tmp/notes.txt']);
   await sender.screenshot({ path: out(`2-sender-selected-${scheme}`), fullPage: true });
   await sender.getByRole('button', { name: 'Create sharing link' }).click();
@@ -49,7 +49,7 @@ for (const scheme of ['light', 'dark']) {
   const done = await mk('Maria’s laptop', 0);
   const slow = await mk('Studio iMac', 12, true);
   const pending = await mk('', 0);
-  if (scheme === 'light') await pending.screenshot({ path: out('3-receiver-waiting-light'), fullPage: true });
+  await pending.screenshot({ path: out('3-receiver-waiting-light'), fullPage: true });
   await sender.getByRole('button', { name: 'Approve Maria’s laptop' }).click();
   await sender.getByRole('button', { name: 'Approve Studio iMac' }).click();
   await slow.getByRole('button', { name: 'Choose folder and accept' }).waitFor();

@@ -5,7 +5,7 @@ Sources fetched from the React Bits registry (`https://reactbits.dev/r/<Name>-TS
 
 Changes made for DirectSend:
 
-- Colors come from the app's theme tokens (light and dark) instead of hard-coded values.
+- Colors come from the app's color tokens instead of hard-coded values.
 - Every animation honors `prefers-reduced-motion`.
 - Continuous animation loops stop when idle or when the tab is hidden, so they never compete with file transfers for CPU.
 - Styles live in `src/web/ui/styles.css`. No component injects `<style>` or inline scripts, which the Content-Security-Policy would block.
