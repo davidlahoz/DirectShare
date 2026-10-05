@@ -14,7 +14,7 @@ import { closeSync, mkdirSync, openSync, readFileSync, writeSync } from 'node:fs
 import { join } from 'node:path';
 import { type Browser, type BrowserContext, expect, type Page, test } from '@playwright/test';
 
-const TMP = '/tmp/directsend-e2e';
+const TMP = '/tmp/directshare-e2e';
 mkdirSync(TMP, { recursive: true });
 
 interface TestFile {
@@ -81,7 +81,7 @@ const NO_FILESYSTEM_API = () => {
 
 /**
  * Folder handle whose files checksum and discard their bytes. Used to measure
- * DirectSend's own memory use: incognito test contexts keep OPFS data in
+ * DirectShare's own memory use: incognito test contexts keep OPFS data in
  * memory with a small quota, which would distort the measurement.
  */
 const CHECKSUM_PICKER = () => {

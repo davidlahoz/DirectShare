@@ -17,7 +17,7 @@ async function main(): Promise<void> {
   const running = await startServer(config, log);
   const scheme = config.tls ? 'https' : 'http';
   process.stdout.write(
-    `\nDirectSend is running. Open ${scheme}://localhost:${running.port} in your browser.\n` +
+    `\nDirectShare is running. Open ${scheme}://localhost:${running.port} in your browser.\n` +
       `(Inside Docker this is the container port; use the host port you published, 8080 by default.)\n\n`,
   );
   const shutdown = (signal: string) => {

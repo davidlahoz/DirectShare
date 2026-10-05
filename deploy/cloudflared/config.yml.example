@@ -1,4 +1,4 @@
-# cloudflared configuration for DirectSend (runs on the Docker host).
+# cloudflared configuration for DirectShare (runs on the Docker host).
 # Copy to /etc/cloudflared/config.yml (or ~/.cloudflared/config.yml) and replace
 # <TUNNEL-UUID> and the hostname. See docs/DEPLOYMENT.md → "Cloudflare Tunnel".
 tunnel: <TUNNEL-UUID>

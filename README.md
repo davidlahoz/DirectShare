@@ -1,4 +1,6 @@
-# DirectSend
+# DirectShare
+
+A [RazorLabs](https://razorlabs.dev) project, live at **https://directshare.razorlabs.dev**.
 
 Send files directly from one browser to others over WebRTC. Files travel peer-to-peer on encrypted DataChannels. They are **never uploaded to or stored on the application server**. The Node.js server only coordinates connections (WebSocket signaling) and serves the web app.
 

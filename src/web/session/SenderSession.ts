@@ -179,7 +179,7 @@ export class SenderSession {
       this.signaling?.close();
       this.signaling = undefined;
       this.phase = 'select';
-      this.notice = { tone: 'error', text: "Couldn't reach the DirectSend server. Check your internet connection and try again." };
+      this.notice = { tone: 'error', text: "Couldn't reach the DirectShare server. Check your internet connection and try again." };
       this.emit();
     }, 15_000);
     this.emit();
@@ -290,7 +290,7 @@ export class SenderSession {
   private onSignalingStatus(status: SignalingStatus): void {
     this.signalingStatus = status;
     if (status === 'closed' && this.phase === 'sharing') {
-      this.endSharing('The connection to the DirectSend server was lost, so new receivers cannot join. Transfers already in progress continue.');
+      this.endSharing('The connection to the DirectShare server was lost, so new receivers cannot join. Transfers already in progress continue.');
     }
     this.emit();
   }

@@ -292,7 +292,7 @@ export class FileReceiver {
       code,
       message:
         code === 'unsupported-version'
-          ? 'The sender is using a different version of DirectSend. Both sides should reload the page.'
+          ? 'The sender is using a different version of DirectShare. Both sides should reload the page.'
           : 'The sender sent unexpected data, so the transfer was stopped to protect your files.',
     });
   }

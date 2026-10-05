@@ -103,7 +103,7 @@ export class ReceiverSession {
       onStatus: (status) => {
         this.signalingStatus = status;
         if (status === 'closed' && (this.phase === 'connecting' || this.phase === 'awaiting-approval' || this.phase === 'queued')) {
-          this.fail('Connection lost', "Couldn't stay connected to the DirectSend server. Check your internet connection and open the link again.", 'unavailable');
+          this.fail('Connection lost', "Couldn't stay connected to the DirectShare server. Check your internet connection and open the link again.", 'unavailable');
         }
         this.emit();
       },

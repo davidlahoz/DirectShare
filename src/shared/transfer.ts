@@ -1,5 +1,5 @@
 /**
- * DirectSend peer-to-peer transfer protocol, version 1.
+ * DirectShare peer-to-peer transfer protocol, version 1.
  *
  * Runs over one reliable, ordered RTCDataChannel per receiver. Control
  * messages are JSON text frames carrying `v` (protocol version) and `type`.
@@ -31,6 +31,7 @@ import { z } from 'zod';
 import { sanitizeFilename, sanitizeMimeType } from './sanitize';
 
 export const TRANSFER_PROTOCOL_VERSION = 1;
+// Wire id kept from the app's former name (DirectSend) so both peers keep matching it.
 export const DATA_CHANNEL_LABEL = 'directsend-v1';
 
 export const FRAME_MAGIC = 0xd5;

@@ -50,7 +50,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       </main>
       <footer className="site-footer">
         <p>
-          Files travel directly between browsers over an encrypted WebRTC connection (DTLS). The DirectSend server only
+          Files travel directly between browsers over an encrypted WebRTC connection (DTLS). The DirectShare server only
           helps the two devices find each other and never receives file contents.
         </p>
       </footer>

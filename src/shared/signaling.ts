@@ -8,6 +8,7 @@
  */
 import { z } from 'zod';
 
+// Wire id kept from the app's former name (DirectSend) so clients and servers stay compatible.
 export const SIGNALING_SUBPROTOCOL = 'directsend.v1';
 export const SIGNALING_PATH = '/ws';
 

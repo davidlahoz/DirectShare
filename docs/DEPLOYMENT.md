@@ -27,8 +27,8 @@ The tunnel carries only the web app and signaling (a few KB per receiver). File 
 2. **Create the tunnel** (once) with `cloudflared` installed on the host:
    ```bash
    cloudflared tunnel login
-   cloudflared tunnel create directsend
-   cloudflared tunnel route dns directsend send.example.com
+   cloudflared tunnel create directshare
+   cloudflared tunnel route dns directshare send.example.com
    ```
 
 3. **Configure cloudflared**: copy [`deploy/cloudflared/config.yml.example`](../deploy/cloudflared/config.yml.example) to `/etc/cloudflared/config.yml`, then fill in the tunnel UUID, credentials file and hostname. The ingress rule points at `http://127.0.0.1:8080`.
@@ -38,7 +38,7 @@ The tunnel carries only the web app and signaling (a few KB per receiver). File 
    sudo cloudflared service install
    sudo systemctl enable --now cloudflared
    ```
-   Or, for a quick test: `cloudflared tunnel run directsend`.
+   Or, for a quick test: `cloudflared tunnel run directshare`.
 
 5. **Open** `https://send.example.com`.
 
@@ -82,7 +82,7 @@ Room state is in memory in one process. Run **one instance**, or use sticky rout
 
 ## STUN
 
-The defaults are Google's and Cloudflare's public STUN servers. For privacy or reliability you can run your own (for example coturn in STUN-only mode) and set `STUN_URLS=stun:stun.example.com:3478`. STUN servers learn users' public IP addresses. TURN is deliberately unsupported: DirectSend never relays data.
+The defaults are Google's and Cloudflare's public STUN servers. For privacy or reliability you can run your own (for example coturn in STUN-only mode) and set `STUN_URLS=stun:stun.example.com:3478`. STUN servers learn users' public IP addresses. TURN is deliberately unsupported: DirectShare never relays data.
 
 ## Local HTTPS for testing across devices
 
